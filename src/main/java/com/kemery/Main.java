@@ -26,9 +26,9 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		
 		
-		Member m = memberDao.find("Z005");
+		Member m = memberDao.find("B146");
 		if(m == null) {
-			System.out.println("Z005 not found");
+			System.out.println("B146 not found");
 		} else {
 			System.out.println(m.toString());
 		}
@@ -49,7 +49,7 @@ public class Main {
 		memberDao.updateMember(m);
 		
 		// Demonstrate update()
-		Member memberToUpdate = memberDao.find("U014");
+/*		Member memberToUpdate = memberDao.find("U014");
 		if(memberToUpdate == null) {
 			System.out.println("U014 not found");
 		} else {
@@ -58,7 +58,7 @@ public class Main {
 		
 		memberToUpdate.setFirstnm("Esmerelda");
 		memberDao.update(memberToUpdate);
-		
+*/		
 		
 		// Demonstrate findByQuery
 /*		m = memberDao.findByQuery("A043");
@@ -79,23 +79,23 @@ public class Main {
 		// Create member to demonstrate insert()
 		Member insertMember = new Member();
 		
-		insertMember.setMemid("S953");
+/*		insertMember.setMemid("S953");
 		insertMember.setFirstnm("Adam");
 		insertMember.setLastnm("Smith");
 		insertMember.setMiddlenm("Joseph");
 		insertMember.setStatus("C");
 		insertMember.setMemdt("1776-09-03");
 		insertMember.setPassword(0301);
-
+*/
 		// Uncomment the following line to insert Adam Smith
 	//	memberDao.insert(insertMember);
-		insertMember = memberDao.find(insertMember.getMemid());
+	//	insertMember = memberDao.find(insertMember.getMemid());
 		
 		System.out.println(insertMember.getMemid());
 		
 		// Demonstrate delete()
-		String deleteMember = "S953";
-		memberDao.delete(deleteMember);		
+//		String deleteMember = "S953";
+//		memberDao.delete(deleteMember);		
 		connection.close();
 
 		//System.out.println("Club connection " + connection.isClosed());

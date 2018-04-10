@@ -11,4 +11,5 @@ public interface MemberDao {
 	public void delete(String memid);
 	public void update(Member member);
 	public void updateMember(Member member);
+	public void addDuesPurchase(String memid, String purchasedt, String success);
 }

@@ -136,6 +136,13 @@ public class MemberDaoJdbcImpl implements MemberDao {
 	}
 
 
+	@Override
+	public void addDuesPurchase(String memid, String purchasedt, String success) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 //	public void update(Member member) {
 //		int count = jdbcTemplate.update("update tblmembers set (memid, lastname, firstname, middlename, status, memdt, password) = (?,?,?,?,?,?,?) where memid = ?",
 //						member.getMemid(), member.getLastnm(), member.getFirstnm(), member.getMiddlenm(), member.getStatus(), member.getMemdt(), member.getPassword(), member.getMemid());

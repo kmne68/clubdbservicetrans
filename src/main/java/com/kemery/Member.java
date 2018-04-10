@@ -112,6 +112,16 @@ public class Member {
         this.passattempt = passattempt;
     }
     
+    
+    public void renew() {
+    	int yr = Integer.parseInt(this.expdt.substring(0, 4));
+    	yr++;
+    	String newexpdt = String.valueOf(yr) + this.expdt.substring(4);
+    	this.expdt = newexpdt;
+    }
+    
+    
+    
     @Override
     public String toString() {
     	return this.memid + ", " + this.lastnm + ", " + this.firstnm + ", " + this.middlenm + ", " + this.status + ", " + this.memdt + ", " + this.expdt + ", " + this.password;

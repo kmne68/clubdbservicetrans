@@ -26,10 +26,44 @@ public class MemberServiceImpl implements MemberService {
 			}
 			
 			m.setPassword(password);
-			memberDao.update(m);
-			System.out.println("Member " + memid + " updated.");
+			memberDao.updateMember(m);
+			//System.out.println("Member " + memid + " updated.");
 		} catch(Exception e) {
 			throw new UpdateFailedException("Update fail for " + memid + " " + e.getMessage());
+		}
+	}
+	
+	public boolean showMember(String memid) {
+		
+		try {
+			Member m = memberDao.find(memid);
+			System.out.println("Member found " + m.toString());
+			return true;
+		} catch (Exception e) {
+			System.out.println("Member not found");
+		}
+		return false;
+	}
+	
+	
+	@Transactional
+	public void renewMember(String memid, String success) {
+		
+		try {
+			// find member
+			// renew member expiration date
+			// create purchase record for dues renewal amount
+			// use underlying DAO object
+			Member m = memberDao.find(memid);
+			
+			m.renew();
+			memberDao.updateMember(m);
+			
+			// add dues purchase
+			// call memberDao.addDuesPurchase(...)
+			
+		} catch (Exception e) {
+			throw new UpdateFailedException(e.getMessage());
 		}
 	}
 	

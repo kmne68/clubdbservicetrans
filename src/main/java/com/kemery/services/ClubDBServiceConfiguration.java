@@ -2,6 +2,7 @@ package com.kemery.services;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,6 +35,7 @@ public class ClubDBServiceConfiguration {
 	
 	
 	@Bean
+	@Autowired
 	public MemberService memberService(MemberDao memberDao) {
 		
 		MemberServiceImpl bean = new MemberServiceImpl();

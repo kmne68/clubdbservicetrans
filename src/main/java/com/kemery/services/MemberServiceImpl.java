@@ -1,5 +1,11 @@
 package com.kemery.services;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kemery.Member;
@@ -59,12 +65,15 @@ public class MemberServiceImpl implements MemberService {
 			m.renew();
 			memberDao.updateMember(m);
 			
+			String purchasedt = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+
+			memberDao.addDuesPurchase(memid, purchasedt, success);
+			
 			// add dues purchase
 			// call memberDao.addDuesPurchase(...)
 			
 		} catch (Exception e) {
 			throw new UpdateFailedException(e.getMessage());
 		}
-	}
-	
+	}	
 }

@@ -1,10 +1,14 @@
 package com.kemery;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.Collections;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
@@ -13,12 +17,19 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 public class MemberDaoJdbcImpl implements MemberDao {
 
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private MappingSqlQuery<Member> memberByIdQuery;
+	private DataSource dataSource;
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 	
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		
@@ -137,8 +148,26 @@ public class MemberDaoJdbcImpl implements MemberDao {
 
 
 	@Override
+	@Transactional
 	public void addDuesPurchase(String memid, String purchasedt, String success) {
 		// TODO Auto-generated method stub
+//		Connection connection = null;
+//		Statement statement = null;
+		
+		try {
+			if(success.equalsIgnoreCase("Y")) {
+				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSERT INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2018-04-23', 'D', '01', 100.00)" )); 
+			} else {
+				// failure (no success)
+				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSET INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2017-03-23', 'D', '01', 100.00)" )); 
+			}
+	//		connection.commit();
+			System.out.println("Transactions for " + memid + " committed.");
+			
+		} catch (Exception e) {
+			
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
 		
 	}
 

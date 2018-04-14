@@ -60,17 +60,19 @@ public class MemberServiceImpl implements MemberService {
 			// renew member expiration date
 			// create purchase record for dues renewal amount
 			// use underlying DAO object
+			if (success == "N") {				
+				
+			}
 			Member m = memberDao.find(memid);
 			
 			m.renew();
 			memberDao.updateMember(m);
 			
 			String purchasedt = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-
-			memberDao.addDuesPurchase(memid, purchasedt, success);
 			
 			// add dues purchase
 			// call memberDao.addDuesPurchase(...)
+			memberDao.addDuesPurchase(memid, purchasedt, success);
 			
 		} catch (Exception e) {
 			throw new UpdateFailedException(e.getMessage());

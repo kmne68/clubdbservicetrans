@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -138,7 +139,7 @@ public class MemberDaoJdbcImpl implements MemberDao {
 			if (count != 1)
 				throw new UpdateFailedException("No member update for " + member.getMemid() + " count = " + count);
 			else {
-				System.out.println("Member " + member.getMemid() + " updated.");
+				System.out.println("Member " + member.getMemid() + " UPDATED.");
 				
 			}
 		} catch (Exception e) {
@@ -151,22 +152,29 @@ public class MemberDaoJdbcImpl implements MemberDao {
 	@Transactional
 	public void addDuesPurchase(String memid, String purchasedt, String success) {
 		// TODO Auto-generated method stub
-//		Connection connection = null;
-//		Statement statement = null;
+		Connection connection = DataSourceUtils.getConnection(dataSource);
+		Statement statement = null;
 		
 		try {
+			statement = connection.createStatement();
+			statement.executeUpdate("UPDATE tblmembers SET ExpDt = '2018-01-01' WHERE memid = '" + memid + "'");
+			
 			if(success.equalsIgnoreCase("Y")) {
-				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSERT INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2018-04-23', 'D', '01', 100.00)" )); 
+	//			statement.executeUpdate("INSERT INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('\" + memid + \"','2018-05-01', 'D', '01', 100.00)");
+//				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSERT INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2018-04-23', 'D', '01', 100.00)" )); 
 			} else {
-				// failure (no success)
-				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSET INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2017-03-23', 'D', '01', 100.00)" )); 
+	//			// failure (no success)
+				statement.executeUpdate("INSET INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('\" + memid + \"','2017-03-23', 'D', '01', 100.00)");
+//				PreparedStatementCreatorFactory psCreatorFactory = new PreparedStatementCreatorFactory(("INSET INTO tblpurchases (memid, purchasedt, transtype, transcd, amount) VALUES ('" + memid + "','2017-03-23', 'D', '01', 100.00)" )); 
 			}
-	//		connection.commit();
+			connection.commit();
 			System.out.println("Transactions for " + memid + " committed.");
 			
 		} catch (Exception e) {
 			
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		} finally {
+			DataSourceUtils.releaseConnection(connection, dataSource);
 		}
 		
 	}
